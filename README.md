@@ -59,6 +59,37 @@ You should test different levels for your specific needs. The repository uses 9 
 | `12`  | Medium    | Very good | Weekly backups             |
 | `19`  | Slow      | Best      | Cold / archival storage    |
 
+## Example output (Apple M1 Max)
+
+```bash
+SQLite Backup - Compress
+────────────────────────────────────
+  Source:      /data/mydb.db
+  Destination: /data/mydb.sql.zst
+  zstd level:  9
+
+→ Dumping schema and rows to SQL...
+  Input size: 1.8G
+✓ Compressed: 1.8G → 177M
+
+────────────────────────────────────
+Done! 15s - output: /data/mydb.sql.zst
+
+
+SQLite Backup - Decompress
+────────────────────────────────────
+  Source:      /data/mydb.sql.zst
+  Destination: /data/mydb_restored.db
+
+→ Decompressing archive...
+  Compressed size: 177M
+→ Importing SQL into SQLite...
+✓ Restored: 177M → 1.8G
+
+────────────────────────────────────
+Done! 13s - output: /data/mydb_restored.db
+```
+
 ## License
 
 This project and each package it provides is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.

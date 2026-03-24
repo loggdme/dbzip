@@ -86,7 +86,7 @@ elif [ "$MODE" = "decompress" ]; then
     info "Compressed size: $COMPRESSED_SIZE"
 
     TEMP_SQL=$(mktemp /tmp/dump_XXXXXX.sql)
-    zstd -d "$INPUT_FILE" -o "$TEMP_SQL" --force
+    zstd -d "$INPUT_FILE" -o "$TEMP_SQL" --force -q
 
     step "Importing SQL into SQLite..."
     rm -f "$OUTPUT_FILE"
