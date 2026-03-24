@@ -30,7 +30,7 @@ jobs:
           context: docker
           push: true
           tags: |
-            ghcr.io/loggdme/container-health-metrics:latest
-            ghcr.io/loggdme/container-health-metrics:${{ github.ref_name }}
+            ghcr.io/loggdme/dbzip:latest
+            ghcr.io/loggdme/dbzip:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

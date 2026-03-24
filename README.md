@@ -3,7 +3,7 @@
   ![Loggd Banner](https://raw.githubusercontent.com/loggdme/.github/refs/heads/main/.github/assets/header.webp)
   
   # DBZip
-  A minimal Docker utility to backup and restore SQLite databases using SQL dumps compressed with zstd.
+  A minimal Docker utility to backup and restore SQLite databases using SQL dumps compressed with zstd. Optionally supports custom zstd dictionaries for improved compression ratios across similar databases.
 </div>
 
 <br>
@@ -14,7 +14,20 @@
 
 **Decompress**: Decompresses the archive and replays the SQL into a fresh SQLite database.
 
+**Train**: Generates a zstd dictionary from a set of sample databases. Use this once, then reference the dictionary in all future compress/decompress runs for better ratios.
+
 ## Usage
+
+### Train a dictionary
+
+```bash
+docker run --rm \
+  -v /your/path:/data \
+  -e MODE=train \
+  -e SAMPLE_DIR=/data/samples \
+  -e OUTPUT_FILE=/data/db.dict \
+  ghcr.io/loggdme/sqlite-compress
+```
 
 ### Compress
 
@@ -41,12 +54,14 @@ docker run --rm \
 
 ## Environment variables
 
-| Variable      | Default                | Description                                                 |
-|---------------|------------------------|-------------------------------------------------------------|
-| `MODE`        | `compress`             | `compress` or `decompress`                                  |
-| `INPUT_FILE`  | `/data/input.db`       | Path to the source file                                     |
-| `OUTPUT_FILE` | `/data/output.sql.zst` | Path to the output file                                     |
-| `ZSTD_LEVEL`  | `9`                    | zstd compression level (1–19). Higher = smaller but slower. |
+| Variable      | Default                | Description                                                             |
+|---------------|------------------------|-------------------------------------------------------------------------|
+| `MODE`        | `compress`             | `compress` or `decompress`                                              |
+| `INPUT_FILE`  | `/data/input.db`       | Path to the source file                                                 |
+| `OUTPUT_FILE` | `/data/output.sql.zst` | Path to the output file                                                 |
+| `ZSTD_LEVEL`  | `9`                    | zstd compression level (1–19). Higher = smaller but slower.             |
+| `DICT_FILE`   | *(none)*               | Optional path to a zstd dictionary file                                 |
+| `SAMPLE_DIR`  | `/data`                | Directory of `.db` files to train a dictionary from (`train` mode only) |
 
 ## Compression levels
 
@@ -61,6 +76,8 @@ You should test different levels for your specific needs. The repository uses 9 
 
 ## Example output (Apple M1 Max)
 
+### Compress
+
 ```bash
 SQLite Backup - Compress
 ────────────────────────────────────
@@ -74,8 +91,11 @@ SQLite Backup - Compress
 
 ────────────────────────────────────
 Done! 15s - output: /data/mydb.sql.zst
+```
 
+### Decompress
 
+```bash
 SQLite Backup - Decompress
 ────────────────────────────────────
   Source:      /data/mydb.sql.zst
