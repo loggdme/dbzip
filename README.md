@@ -26,7 +26,7 @@ docker run --rm \
   -e MODE=train \
   -e SAMPLE_DIR=/data/samples \
   -e OUTPUT_FILE=/data/db.dict \
-  ghcr.io/loggdme/sqlite-compress
+  ghcr.io/loggdme/dbzip:latest
 ```
 
 ### Compress
@@ -38,7 +38,7 @@ docker run --rm \
   -e ZSTD_LEVEL=9 \
   -e INPUT_FILE=/data/mydb.db \
   -e OUTPUT_FILE=/data/mydb.sql.zst \
-  ghcr.io/loggdme/sqlite-compress
+  ghcr.io/loggdme/dbzip:latest
 ```
 
 ### Decompress
@@ -49,7 +49,7 @@ docker run --rm \
   -e MODE=decompress \
   -e INPUT_FILE=/data/mydb.sql.zst \
   -e OUTPUT_FILE=/data/restored.db \
-  ghcr.io/loggdme/sqlite-compress
+  ghcr.io/loggdme/dbzip:latest
 ```
 
 ## Environment variables
